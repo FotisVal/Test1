@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open YouTube & Google Maps</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        button { font-size: 20px; padding: 15px 30px; margin: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Tap below to start</h2>
+    <button onclick="openApps()">▶️ Play & Navigate 📍</button>
+
+    <script>
+        function openApps() {
+            // Open YouTube video
+            window.location.href = "https://www.youtube.com/watch?v=1vrEljMfXYo"; 
+
+            // Delay for 2 seconds, then open Google Maps
+            setTimeout(function() {
+                window.location.href = "google.navigation:q=Home";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
