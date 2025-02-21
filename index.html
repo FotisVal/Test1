@@ -7,21 +7,25 @@
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
         button { font-size: 20px; padding: 15px 30px; margin: 10px; cursor: pointer; }
+        #mapsBtn { display: none; } /* Κρύβουμε το κουμπί του Google Maps αρχικά */
     </style>
 </head>
 <body>
     <h2>Tap below to start</h2>
-    <button onclick="openApps()">▶️ Play & Navigate 📍</button>
+    <button onclick="openYouTube()">▶️ Play Music</button>
+    <br><br>
+    <button id="mapsBtn" onclick="openMaps()">📍 Navigate Home</button>
 
     <script>
-        function openApps() {
-            // Open YouTube video
+        function openYouTube() {
             window.location.href = "https://www.youtube.com/watch?v=1vrEljMfXYo"; 
-
-            // Delay for 2 seconds, then open Google Maps
             setTimeout(function() {
-                window.location.href = "google.navigation:q=Home";
+                document.getElementById("mapsBtn").style.display = "block"; // Δείχνουμε το κουμπί μετά από 2 sec
             }, 2000);
+        }
+
+        function openMaps() {
+            window.location.href = "google.navigation:q=Home";
         }
     </script>
 </body>
