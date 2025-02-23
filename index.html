@@ -3,30 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open YouTube & Google Maps</title>
+    <title>Mini Cooper Routine</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        button { font-size: 20px; padding: 15px 30px; margin: 10px; cursor: pointer; }
-        #mapsBtn { display: none; } /* Κρύβουμε το κουμπί του Google Maps αρχικά */
+        body {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 2.5em;
+            margin-top: 20px;
+        }
+        h2 {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .button {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .corner-image {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 128px;
+            height: auto;
+        }
     </style>
 </head>
 <body>
-    <h2>Tap below to start</h2>
-    <button onclick="openYouTube()">▶️ Play Music</button>
-    <br><br>
-    <button id="mapsBtn" onclick="openMaps()">📍 Navigate Home</button>
-
-    <script>
-        function openYouTube() {
-            window.location.href = "https://www.youtube.com/watch?v=1vrEljMfXYo"; 
-            setTimeout(function() {
-                document.getElementById("mapsBtn").style.display = "block"; // Δείχνουμε το κουμπί μετά από 2 sec
-            }, 2000);
-        }
-
-        function openMaps() {
-            window.location.href = "google.navigation:q=Home";
-        }
-    </script>
+    <h1>Mini Cooper Routine</h1>
+    <h2>Press the button</h2>
+    <div class="button-container">
+        <button class="button" onclick="window.location.href='https://open.spotify.com/track/1QbOvACeYanja5pbnJbAmk?si=EzZtG054RjqB5ZaEoMe58g'">
+            🎵 Play Music
+        </button>
+        <button class="button" onclick="navigateToHomeWithDetectedLanguage()">
+            Navigate Home
+        </button>
+    </div>
+    <img src="https://raw.githubusercontent.com/FotisVal/NFC_Home_Music/main/pngegg.png" class="corner-image">
 </body>
+
+<script>
+    function getGoogleMapsLanguage() {
+        // Use navigator.language as a fallback if 'hl' is not set
+        const defaultLanguage = navigator.language || 'en';
+
+        // Attempt to extract the 'hl' parameter from the Google Maps URL if available
+        const storedMapsUrl = localStorage.getItem('maps_url');
+        if (storedMapsUrl) {
+            const urlParams = new URLSearchParams(new URL(storedMapsUrl).search);
+            const mapsLanguage = urlParams.get('hl');
+            if (mapsLanguage) {
+                return mapsLanguage;
+            }
+        }
+        
+        // Default to browser language or 'en' if all else fails
+        return defaultLanguage;
+    }
+
+    function navigateToHomeWithDetectedLanguage() {
+        const mapsLanguage = getGoogleMapsLanguage();
+        console.log("Detected Google Maps Language:", mapsLanguage);
+        const url = `https://www.google.com/maps/dir/?api=1&destination=home&travelmode=driving&dir_action=navigate&hl=${mapsLanguage}`;
+        window.location.href = url;
+
+        // Store the URL for future language detection
+        localStorage.setItem('maps_url', url);
+    }
+</script>
+
 </html>
