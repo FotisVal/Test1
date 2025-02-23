@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <font-face 
+    font-family: 'CustomFont';
+    src: url('https://github.com/FotisVal/NFC_Home_Music/blob/f791d267407d9b546e6d2a7fc74dd351b3847fd8/fonts/GRAYSTROKE%20ITALIC.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    >
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini Cooper Routine</title>
@@ -11,16 +17,35 @@
             text-align: center;
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
-        h1 {
-            font-family: 'Courier New', Courier, monospace;
+        .header {
+            background-color: #222;
+            padding: 20px 0;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .header h1 {
+            font-family: CustomFont, sans-serif;
+            color: red;
             font-size: 2.5em;
-            margin-top: 20px;
+            margin: 0;
+        }
+        .header::after {
+            content: "";
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #777; /* Σταθερό χρώμα γραμμής */
+            position: absolute;
+            bottom: 0;
+            left: 0;
         }
         h2 {
-            font-size: 1.2em;
+            font-size: 0.9em;
             margin-bottom: 30px;
+            color: #bbb;
         }
         .button-container {
             display: flex;
@@ -33,13 +58,17 @@
             background-color: #555;
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 15px 40px;
             font-size: 1.5em;
             border-radius: 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 10px;
+            width: 270px; /* Ίδιο μήκος για τα κουμπιά */
+            height: 60px; /* Ίδιο ύψος για να είναι ομοιόμορφα */
+            justify-content: center;
+            white-space: nowrap; /* Εμποδίζει το "Take me Home" από το να σπάσει σε δύο γραμμές */
         }
         .corner-image {
             position: fixed;
@@ -51,47 +80,18 @@
     </style>
 </head>
 <body>
-    <h1>Mini Cooper Routine</h1>
+    <div class="header">
+        <h1>Mini Cooper Routine</h1>
+    </div>
     <h2>Press the button</h2>
     <div class="button-container">
         <button class="button" onclick="window.location.href='https://open.spotify.com/track/1QbOvACeYanja5pbnJbAmk?si=EzZtG054RjqB5ZaEoMe58g'">
             🎵 Play Music
         </button>
-        <button class="button" onclick="navigateToHomeWithDetectedLanguage()">
-            Navigate Home
+        <button class="button" onclick="window.location.href='https://www.google.com/maps/dir/?api=1&destination=home&travelmode=driving&dir_action=navigate&hl=en'">
+            📍 Take me Home
         </button>
     </div>
     <img src="https://raw.githubusercontent.com/FotisVal/NFC_Home_Music/main/pngegg.png" class="corner-image">
 </body>
-
-<script>
-    function getGoogleMapsLanguage() {
-        // Use navigator.language as a fallback if 'hl' is not set
-        const defaultLanguage = navigator.language || 'en';
-
-        // Attempt to extract the 'hl' parameter from the Google Maps URL if available
-        const storedMapsUrl = localStorage.getItem('maps_url');
-        if (storedMapsUrl) {
-            const urlParams = new URLSearchParams(new URL(storedMapsUrl).search);
-            const mapsLanguage = urlParams.get('hl');
-            if (mapsLanguage) {
-                return mapsLanguage;
-            }
-        }
-        
-        // Default to browser language or 'en' if all else fails
-        return defaultLanguage;
-    }
-
-    function navigateToHomeWithDetectedLanguage() {
-        const mapsLanguage = getGoogleMapsLanguage();
-        console.log("Detected Google Maps Language:", mapsLanguage);
-        const url = `https://www.google.com/maps/dir/?api=1&destination=home&travelmode=driving&dir_action=navigate&hl=${mapsLanguage}`;
-        window.location.href = url;
-
-        // Store the URL for future language detection
-        localStorage.setItem('maps_url', url);
-    }
-</script>
-
 </html>
