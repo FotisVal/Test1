@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Αποθήκευση Στάθμευσης</title>
+    <title>Save Parking</title>
     <script>
         function saveParkingSpot() {
             if (navigator.geolocation) {
@@ -12,8 +12,9 @@
                     let lon = position.coords.longitude;
                     let mapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
                     
-                    // Άνοιγμα Google Maps με την τρέχουσα τοποθεσία
-                    window.location.href = mapsUrl;
+                    // Εμφάνιση κουμπιού για αποθήκευση στο Google Maps
+                    document.getElementById("mapLink").href = mapsUrl;
+                    document.getElementById("mapLink").style.display = "block";
                 }, function(error) {
                     alert("Δεν ήταν δυνατή η ανάκτηση της τοποθεσίας σας.");
                 });
@@ -24,6 +25,10 @@
     </script>
 </head>
 <body onload="saveParkingSpot()">
-    <h2>Αποθήκευση Τοποθεσίας Στάθμευσης...</h2>
+    <h2>Αποθήκευση Τοποθεσίας Στάθμευσης</h2>
+    <p>Πατήστε το κουμπί για να αποθηκεύσετε τη θέση σας στο Google Maps.</p>
+    <a id="mapLink" href="#" target="_blank" style="display:none; padding: 10px; background-color: blue; color: white; text-decoration: none; border-radius: 5px;">
+        Αποθήκευση Parking στο Google Maps
+    </a>
 </body>
 </html>
