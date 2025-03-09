@@ -23,7 +23,6 @@
             border-radius: 12px;
             padding: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: background 0.5s ease-in-out;
         }
         .cover img {
             width: 100px;
@@ -45,17 +44,17 @@
             color: #b3b3b3;
         }
         .play-button {
-            background-color: white;
+            background-color: #1DB954;
             border: none;
-            color: #1DB954;
-            padding: 10px;
+            color: white;
+            padding: 10px 15px;
             font-size: 16px;
             border-radius: 50px;
             cursor: pointer;
             transition: 0.3s;
         }
         .play-button:hover {
-            background-color: #f1f1f1;
+            background-color: #18a94d;
         }
     </style>
 </head>
@@ -74,18 +73,20 @@
 
     <script>
         const trackId = "1UtAIk72ORdykeV2puh04v"; // Spotify Track ID
+        const playUrl = `https://open.spotify.com/track/${trackId}`; // URL για αναπαραγωγή
         const embedContainer = document.getElementById("embed-container");
-        let accessToken = ""; // Θα πάρουμε το access token για το Spotify API
 
         async function fetchSpotifyData() {
-            const response = await fetch(`https://open.spotify.com/oembed?url=https://open.spotify.com/track/${trackId}`);
+            const response = await fetch(`https://open.spotify.com/oembed?url=${playUrl}`);
             const data = await response.json();
             
             document.getElementById("cover-img").src = data.thumbnail_url;
             document.getElementById("song-title").textContent = data.title;
-            document.getElementById("artist-name").textContent = data.author_name;
 
-            // Δυναμικό background color (χρησιμοποιούμε μέσο όρο των χρωμάτων του cover)
+            // Εξάγουμε το όνομα του καλλιτέχνη από το data.author_name
+            document.getElementById("artist-name").textContent = data.author_name.split(" - ")[0];
+
+            // Αλλάζουμε το background χρώμα δυναμικά
             extractColorsFromImage(data.thumbnail_url);
         }
 
@@ -118,41 +119,9 @@
             };
         }
 
-        async function getSpotifyAccessToken() {
-            const clientId = "YOUR_SPOTIFY_CLIENT_ID";
-            const clientSecret = "YOUR_SPOTIFY_CLIENT_SECRET";
-
-            const response = await fetch("https://accounts.spotify.com/api/token", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "Authorization": "Basic " + btoa(clientId + ":" + clientSecret),
-                },
-                body: "grant_type=client_credentials",
-            });
-
-            const data = await response.json();
-            accessToken = data.access_token;
-        }
-
-        async function playOnSpotify() {
-            if (!accessToken) {
-                await getSpotifyAccessToken();
-            }
-
-            fetch("https://api.spotify.com/v1/me/player/play", {
-                method: "PUT",
-                headers: {
-                    "Authorization": "Bearer " + accessToken,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    uris: [`spotify:track:${trackId}`],
-                }),
-            }).catch(error => console.error("Error playing track:", error));
-        }
-
-        document.getElementById("play-btn").addEventListener("click", playOnSpotify);
+        document.getElementById("play-btn").addEventListener("click", function() {
+            window.open(playUrl, "_blank"); // Ανοίγει το Spotify Web Player σε νέο tab
+        });
 
         fetchSpotifyData();
     </script>
