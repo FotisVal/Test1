@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Spotify Player</title>
+    <title>Custom Spotify Embed</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,54 +14,76 @@
             align-items: center;
             height: 100vh;
         }
-        .spotify-player {
-            width: 300px;
-            background-color: #181818;
+        .spotify-embed {
+            width: 500px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            background-color: #1DB954;
             border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
         .cover img {
-            width: 100%;
+            width: 100px;
+            height: 100px;
             border-radius: 8px;
         }
         .song-info {
-            margin-top: 10px;
+            flex-grow: 1;
+            margin-left: 15px;
+            color: white;
+        }
+        .song-info h3, .song-info p {
+            margin: 5px 0;
         }
         .play-button {
-            background-color: #1DB954;
+            background-color: white;
             border: none;
-            color: white;
-            padding: 10px 20px;
+            color: #1DB954;
+            padding: 10px;
             font-size: 16px;
             border-radius: 50px;
             cursor: pointer;
-            margin-top: 10px;
             transition: 0.3s;
         }
         .play-button:hover {
-            background-color: #17a74a;
+            background-color: #f1f1f1;
         }
     </style>
 </head>
 <body>
 
-    <div class="spotify-player">
+    <div class="spotify-embed">
         <div class="cover">
-            <img src="https://i.scdn.co/image/ab67616d00001e02a3b6f7e9e54b9c9b72a8b6b5" alt="Cover Art">
+            <img id="cover-img" src="" alt="Cover Art">
         </div>
         <div class="song-info">
-            <h3>Όνομα Τραγουδιού</h3>
-            <p>Όνομα Καλλιτέχνη</p>
+            <h3 id="song-title">Φόρτωση...</h3>
+            <p id="artist-name">Φόρτωση...</p>
         </div>
-        <button class="play-button" onclick="playOnSpotify()">▶ Play on Spotify</button>
+        <button class="play-button" onclick="playOnSpotify()">▶</button>
     </div>
 
     <script>
-        function playOnSpotify() {
-            window.location.href = "spotify:track:1UtAIk72ORdykeV2puh04v";
+        // Spotify Track ID
+        const trackId = "1UtAIk72ORdykeV2puh04v"; // Βάλε εδώ το σωστό ID του τραγουδιού σου!
+
+        async function fetchSpotifyData() {
+            const response = await fetch(`https://open.spotify.com/oembed?url=https://open.spotify.com/track/${trackId}`);
+            const data = await response.json();
+            
+            // Ενημέρωση του custom embed με τα στοιχεία του τραγουδιού
+            document.getElementById("cover-img").src = data.thumbnail_url;
+            document.getElementById("song-title").textContent = data.title;
+            document.getElementById("artist-name").textContent = data.author_name;
         }
+
+        function playOnSpotify() {
+            window.location.href = `spotify:track:${trackId}`;
+        }
+
+        fetchSpotifyData();
     </script>
 
 </body>
