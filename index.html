@@ -3,32 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Save Parking</title>
+    <title>Custom Spotify Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .spotify-player {
+            width: 300px;
+            background-color: #181818;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .cover img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .song-info {
+            margin-top: 10px;
+        }
+        .play-button {
+            background-color: #1DB954;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .play-button:hover {
+            background-color: #17a74a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="spotify-player">
+        <div class="cover">
+            <img src="https://i.scdn.co/image/ab67616d00001e02a3b6f7e9e54b9c9b72a8b6b5" alt="Cover Art">
+        </div>
+        <div class="song-info">
+            <h3>Όνομα Τραγουδιού</h3>
+            <p>Όνομα Καλλιτέχνη</p>
+        </div>
+        <button class="play-button" onclick="playOnSpotify()">▶ Play on Spotify</button>
+    </div>
+
     <script>
-        function saveParkingSpot() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    let lat = position.coords.latitude;
-                    let lon = position.coords.longitude;
-                    let mapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
-                    
-                    // Εμφάνιση κουμπιού για αποθήκευση στο Google Maps
-                    document.getElementById("mapLink").href = mapsUrl;
-                    document.getElementById("mapLink").style.display = "block";
-                }, function(error) {
-                    alert("Δεν ήταν δυνατή η ανάκτηση της τοποθεσίας σας.");
-                });
-            } else {
-                alert("Η τοποθεσία δεν υποστηρίζεται από το πρόγραμμα περιήγησης.");
-            }
+        function playOnSpotify() {
+            window.location.href = "spotify:track:1UtAIk72ORdykeV2puh04v";
         }
     </script>
-</head>
-<body onload="saveParkingSpot()">
-    <h2>Αποθήκευση Τοποθεσίας Στάθμευσης</h2>
-    <p>Πατήστε το κουμπί για να αποθηκεύσετε τη θέση σας στο Google Maps.</p>
-    <a id="mapLink" href="#" target="_blank" style="display:none; padding: 10px; background-color: blue; color: white; text-decoration: none; border-radius: 5px;">
-        Αποθήκευση Parking στο Google Maps
-    </a>
+
 </body>
 </html>
