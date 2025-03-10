@@ -104,34 +104,19 @@
     <h2>Press the button</h2>
 
     <div class="button-container">
-        <!-- Navigation Button that opens Google Maps & triggers Spotify -->
-        <button class="button" onclick="navigateWithMusic()">
+        <!-- Button that opens Google Assistant with navigation and music command -->
+        <button class="button" onclick="openGoogleAssistant()">
             📍 Take me Home & 🎵
         </button>
     </div>
 
     <script>
-        function navigateWithMusic() {
-            // 1. Ανίχνευση γλώσσας χρήστη για Google Maps
-            const homeTranslations = {
-                'en': 'home', 'es': 'casa', 'fr': 'domicile', 'de': 'heim', 'it': 'casa', 
-                'pt': 'casa', 'ru': 'дом', 'zh': '家', 'ja': '家', 'ko': '집', 'el': 'σπίτι'
-            };
-
-            const userLang = Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
-            const langCode = userLang.split('-')[0];
-            const homeLabel = homeTranslations[langCode] || 'home';
-
-            // Google Maps URL
-            const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${homeLabel}&travelmode=driving&dir_action=navigate`;
-
-            // Ανοίγουμε το Google Maps
-            window.open(mapsUrl, "_blank");
-
-            // 2. Μετά από 3 δευτερόλεπτα, ανοίγουμε το Google Search για να προκαλέσουμε το Spotify banner
-            setTimeout(() => {
-                window.open("https://www.google.com/search?q=Take+Me+Home+song+Spotify", "_blank");
-            }, 3000);
+        function openGoogleAssistant() {
+            // Εντολή για τον Google Assistant να πλοηγηθεί στο σπίτι και να παίξει μουσική
+            const assistantUrl = "googleassistant://sendText?text=Navigate+home+and+play+Take+Me+Home+on+Spotify";
+            
+            // Ανοίγουμε το Google Assistant
+            window.location.href = assistantUrl;
         }
     </script>
 </body>
