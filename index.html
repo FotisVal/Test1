@@ -1,38 +1,151 @@
 <!DOCTYPE html>
-<html lang="el">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Embed Player</title>
+    <title>Mini Cooper Routine</title>
+    
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #121212;
+            background: linear-gradient(to bottom, #222, #444); /* Smooth gradient */
             color: white;
+            text-align: center;
+            font-family: 'Oswald', sans-serif;
+            margin: 0;
+            padding: 0;
         }
-        .player-container {
-            background-color: #181818;
-            padding: 20px;
-            border-radius: 12px;
+
+        .header {
+            background-color: #222;
+            padding: 15px 0;
+            width: 100%;
+            box-sizing: border-box;
+            height: 120px;
+            position: relative;
+        }
+
+        .header h1 {
+            color: yellow;
+            font-size: 2.8em;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header::after {
+            content: "";
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #777;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        h2 {
+            font-size: 1em;
+            margin-bottom: 30px;
+            color: #bbb;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .button {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.5em;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 270px;
+            height: 60px;
+            justify-content: center;
+            white-space: nowrap;
+            transition: background 0.3s;
+        }
+
+        .button:hover {
+            background-color: #777;
+        }
+
+        /* Custom Spotify Button */
+        .spotify-button {
             display: inline-block;
+            background-color: #1DB954;
+            color: white;
+            font-size: 1.2em;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s;
         }
-        iframe {
-            border-radius: 12px;
+
+        .spotify-button:hover {
+            background-color: #17a74b;
+        }
+
+        /* Background Image */
+        body::before {
+            content: "";
+            background: url('https://raw.githubusercontent.com/FotisVal/NFC_Home_Music/main/pngegg.png') no-repeat center bottom;
+            background-size: 300px;
+            opacity: 0.15; /* Low opacity for a stylish effect */
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
-
-    <div class="player-container">
-        <h2>🎵 My Favorite Song</h2>
-        <h4>by Awesome Artist</h4>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-        </iframe>
+    <div class="header">
+        <h1><span>Mini Cooper</span><span>Routine</span></h1>
     </div>
 
+    <h2>Press the button</h2>
+
+    <div class="button-container">
+        <!-- Custom Spotify Button -->
+        <a href="spotify:playlist:37i9dQZF1E39oixsPcANo4" class="spotify-button" target="_blank">
+            ▶ Play on Spotify
+        </a>
+
+        <!-- Navigation Button -->
+        <button class="button" onclick="navigateToHome()">
+            📍 Take me Home
+        </button>
+    </div>
+
+    <script>
+        // Translation map for 'Home' in different languages
+        const homeTranslations = {
+            'en': 'home', 'es': 'casa', 'fr': 'domicile', 'de': 'heim', 'it': 'casa', 
+            'pt': 'casa', 'ru': 'дом', 'zh': '家', 'ja': '家', 'ko': '집', 'el': 'σπίτι'
+        };
+
+        function navigateToHome() {
+            const userLang = Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+            const langCode = userLang.split('-')[0];
+            const homeLabel = homeTranslations[langCode] || 'home';
+            const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${homeLabel}&travelmode=driving&dir_action=navigate`;
+            window.open(mapsUrl, "_blank");
+        }
+    </script>
 </body>
 </html>
