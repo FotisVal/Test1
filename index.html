@@ -126,25 +126,31 @@
             ▶ Play on Spotify
         </a>
 
-        <!-- Navigation Button -->
-        <button class="button" onclick="navigateToHome()">
-            📍 Take me Home
+        <!-- Navigation Button that opens Google Maps & Spotify -->
+        <button class="button" onclick="navigateAndPlayMusic()">
+            📍 Take me Home & 🎵
         </button>
     </div>
 
     <script>
-        // Translation map for 'Home' in different languages
-        const homeTranslations = {
-            'en': 'home', 'es': 'casa', 'fr': 'domicile', 'de': 'heim', 'it': 'casa', 
-            'pt': 'casa', 'ru': 'дом', 'zh': '家', 'ja': '家', 'ko': '집', 'el': 'σπίτι'
-        };
+        function navigateAndPlayMusic() {
+            // 1. Άνοιγμα Google Maps
+            const homeTranslations = {
+                'en': 'home', 'es': 'casa', 'fr': 'domicile', 'de': 'heim', 'it': 'casa', 
+                'pt': 'casa', 'ru': 'дом', 'zh': '家', 'ja': '家', 'ko': '집', 'el': 'σπίτι'
+            };
 
-        function navigateToHome() {
             const userLang = Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
             const langCode = userLang.split('-')[0];
             const homeLabel = homeTranslations[langCode] || 'home';
             const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${homeLabel}&travelmode=driving&dir_action=navigate`;
-            window.open(mapsUrl, "_blank");
+
+            window.open(mapsUrl, "_blank"); // Ανοίγει το Google Maps
+
+            // 2. Μετά από 2 δευτερόλεπτα, ανοίγει το τραγούδι στο Spotify
+            setTimeout(() => {
+                window.open("spotify:track:5hA5bPkirxC3HC3UjUQbwa", "_blank"); // Ανοίγει το "Take Me Home"
+            }, 2000);
         }
     </script>
 </body>
