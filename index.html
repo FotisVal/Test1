@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Αποθήκευση και Πλοήγηση</title>
+</head>
+<body>
+
+    <h2>Αποθήκευση Τοποθεσίας & Πλοήγηση</h2>
+    <button onclick="saveLocation()">Αποθήκευση Τοποθεσίας</button>
+    <button onclick="navigateToLocation()">Πλοήγηση στο Σημείο</button>
+
+    <p id="status"></p>
+
+    <script>
+        let savedLatitude = null;
+        let savedLongitude = null;
+
+        function saveLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        savedLatitude = position.coords.latitude;
+                        savedLongitude = position.coords.longitude;
+                        document.getElementById("status").innerText = 
+                            "Τοποθεσία αποθηκεύτηκε: " + savedLatitude + ", " + savedLongitude;
+                    },
+                    function(error) {
+                        document.getElementById("status").innerText = 
+                            "Σφάλμα κατά την απόκτηση τοποθεσίας.";
+                    }
+                );
+            } else {
+                document.getElementById("status").innerText = 
+                    "Το πρόγραμμα περιήγησης δεν υποστηρίζει geolocation.";
+            }
+        }
+
+        function navigateToLocation() {
+            if (savedLatitude && savedLongitude) {
+                const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${savedLatitude},${savedLongitude}`;
+                window.open(mapsUrl, "_blank");
+            } else {
+                document.getElementById("status").innerText = 
+                    "Δεν υπάρχει αποθηκευμένη τοποθεσία.";
+            }
+        }
+    </script>
+
+</body>
+</html>
