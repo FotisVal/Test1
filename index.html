@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Cooper Routine</title>
+    <style>
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('https://raw.githubusercontent.com/FotisVal/NFC_Home_Music/9086892e1cfb13d0e3f10e926b5b318df55aa4dd/fonts/GRAYSTROKE%20ITALIC.otf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #222;
+            padding: 12px 0;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+            height: 108px;
+        }
+
+        .header h1 {
+            font-family: 'CustomFont', sans-serif;
+            color: yellow;
+            font-size: 2.5em;
+            margin: 0;
+            line-height: 1.2em;
+        }
+
+        .header h1 span {
+            display: block;
+        }
+
+        .header::after {
+            content: "";
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #777;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        h2 {
+            font-size: 0.9em;
+            margin-bottom: 30px;
+            color: #bbb;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .button {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.5em;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 270px;
+            height: 60px;
+            justify-content: center;
+            white-space: nowrap;
+        }
+
+        .corner-image {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 128px;
+            height: auto;
+            opacity: 0.7; /* 70% transparency */
+        }
+
+        #status {
+            margin-top: 15px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><span>Mini Cooper</span><span>Routine</span></h1>
+    </div>
+    
+    <h2>Press the button</h2>
+
+    <div class="button-container">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1E39oixsPcANo4?utm_source=generator" width="70%" height="180" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        
+        <button class="button" onclick="navigateToHome()">📍 Take me Home</button>
+        <button class="button" onclick="navigateToLocation()">🚗 Save n Go Parking</button>
+    </div>
+
+    <img src="https://raw.githubusercontent.com/FotisVal/NFC_Home_Music/main/pngegg.png" class="corner-image">
+
+    <p id="status">Parking status: Not saved</p>
+
+    <script>
+        // Translation map for 'Home' in different languages
+        const homeTranslations = {
+            'en': 'home', 'es': 'casa', 'fr': 'domicile', 'de': 'heim',
+            'it': 'casa', 'pt': 'casa', 'ru': 'дом', 'zh': '家',
+            'ja': '家', 'ko': '집', 'el': 'σπίτι'
+        };
+
+        function navigateToHome() {
+            const userLang = Intl.DateTimeFormat().resolvedOptions().locale || navigator.language || navigator.userLanguage;
+            const langCode = userLang.split('-')[0];
+            const homeLabel = homeTranslations[langCode] || 'home';
+
+            const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${homeLabel}&travelmode=driving&dir_action=navigate`;
+            window.open(mapsUrl, "_blank");
+        }
+
+        let savedLatitude = null;
+        let savedLongitude = null;
+
+        function saveLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        savedLatitude = position.coords.latitude;
+                        savedLongitude = position.coords.longitude;
+
+                        localStorage.setItem("savedLatitude", savedLatitude);
+                        localStorage.setItem("savedLongitude", savedLongitude);
+
+                        document.getElementById("status").innerText = 
+                            "Saved Location: " + savedLatitude + ", " + savedLongitude + " 🗺️📍";
+                    },
+                    function(error) {
+                        document.getElementById("status").innerText = 
+                            "Error retrieving location.";
+                    }
+                );
+            } else {
+                document.getElementById("status").innerText = 
+                    "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function navigateToLocation() {
+            savedLatitude = localStorage.getItem("savedLatitude");
+            savedLongitude = localStorage.getItem("savedLongitude");
+
+            if (savedLatitude && savedLongitude) {
+                const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${savedLatitude},${savedLongitude}&travelmode=walking&dir_action=navigate`;
+                window.open(mapsUrl, "_blank");
+            } else {
+                document.getElementById("status").innerText = 
+                    "No saved location found.";
+            }
+        }
+
+        window.onload = function() {
+            savedLatitude = localStorage.getItem("savedLatitude");
+            savedLongitude = localStorage.getItem("savedLongitude");
+
+            if (savedLatitude && savedLongitude) {
+                document.getElementById("status").innerText = 
+                    "Saved Location: " + savedLatitude + ", " + savedLongitude + " 🗺️📍";
+            } else {
+                saveLocation();
+            }
+        };
+    </script>
+
+</body>
+</html>
