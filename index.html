@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Saver & Navigation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #121212;
+            color: #ffffff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+        h2 {
+            color: #ff9800;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .navigate-btn {
+            background: #ff9800;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        #status {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Save Your Location & Navigate</h2>
+        <p id="status">Fetching location...</p>
+        <button class="navigate-btn" onclick="navigateToLocation()">Start Navigation</button>
+    </div>
+
+    <script>
+        let savedLatitude = null;
+        let savedLongitude = null;
+
+        function saveLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        savedLatitude = position.coords.latitude;
+                        savedLongitude = position.coords.longitude;
+                        
+                        // Store location in LocalStorage
+                        localStorage.setItem("savedLatitude", savedLatitude);
+                        localStorage.setItem("savedLongitude", savedLongitude);
+
+                        document.getElementById("status").innerText = 
+                            "Location Saved: " + savedLatitude + ", " + savedLongitude;
+                    },
+                    function(error) {
+                        document.getElementById("status").innerText = 
+                            "Error retrieving location.";
+                    }
+                );
+            } else {
+                document.getElementById("status").innerText = 
+                    "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function navigateToLocation() {
+            // Load saved location from LocalStorage
+            savedLatitude = localStorage.getItem("savedLatitude");
+            savedLongitude = localStorage.getItem("savedLongitude");
+
+            if (savedLatitude && savedLongitude) {
+                const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${savedLatitude},${savedLongitude}&travelmode=walking&dir_action=navigate`;
+                window.open(mapsUrl, "_blank");
+            } else {
+                document.getElementById("status").innerText = 
+                    "No saved location found.";
+            }
+        }
+
+        // Load stored location on page load
+        window.onload = function() {
+            savedLatitude = localStorage.getItem("savedLatitude");
+            savedLongitude = localStorage.getItem("savedLongitude");
+
+            if (savedLatitude && savedLongitude) {
+                document.getElementById("status").innerText = 
+                    "Saved Location: " + savedLatitude + ", " + savedLongitude;
+            } else {
+                saveLocation(); // Automatically save location on page load
+            }
+        };
+
+        // Prevent page refresh or tab closure without confirmation
+        window.addEventListener("beforeunload", function (event) {
+            event.preventDefault();
+            event.returnValue = "Are you sure you want to leave? Your location might be lost.";
+        });
+
+        // Block refresh using F5 or Ctrl + R
+        document.addEventListener("keydown", function (event) {
+            if (event.ctrlKey && (event.key === "r" || event.key === "R")) {
+                event.preventDefault();
+            }
+            if (event.key === "F5") {
+                event.preventDefault();
+            }
+        });
+    </script>
+
+</body>
+</html>
